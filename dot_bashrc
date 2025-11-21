@@ -1,0 +1,104 @@
+# .bashrc file for interactive bash(1) shells.
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# source global definitions
+# RHEL based distros
+if [ -f /etc/bashrc ] ; then
+	. /etc/bashrc
+# Debian based distros
+elif [ -f /etc/bash.bashrc ] ; then
+	. /etc/bash.bashrc
+fi
+
+# User specific aliases and functions
+if [ -d ~/.config/bash/ ] ; then
+	for rc in ~/.config/bash/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+unset rc
+
+# enable programmable completion features
+if ! shopt -oq posix; then
+	if [ -f /usr/share/bash-completion/bash_completion ] ; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ] ; then
+		. /etc/bash_completion
+	fi
+fi
+
+# Configure bash history
+shopt -s direxpand histappend cmdhist
+HISTCONTROL="ignoreboth"
+HISTIGNORE="clear:exit:reset:reboot:poweroff:history:systemctl reboot:systemctl poweroff"
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=1000
+HISTFILESIZE=10000
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# ensure truecolor support
+export COLORTERM=truecolor
+
+# ls alias - Fedora has some defaults set in /etc/profile.d/colorls.sh
+ls() {
+  command ls "${lsflags[@]}" "$@"
+}
+
+alias la='ls -A -C' 2>/dev/null
+alias ll='ls -l -A --human-readable' 2>/dev/null
+alias li='ll | grep -i' 2>/dev/null # quick case-insensitive partial filename search
+
+# grep color
+grep() {
+  command grep "${grepflags[@]}" "$@"
+}
+egrep() {
+  command egrep "${grepflags[@]}" "$@"
+}
+fgrep() {
+  command fgrep "${grepflags[@]}" "$@"
+}
+
+# colourful less
+alias less='less -R' 2>/dev/null
+
+# colourful man pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		man "$@"
+}
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Configure prompt
+# Uses posh-git-sh (https://github.com/lyze/posh-git-sh) which is loaded in ~/.config/bash above
+if [ -f ~/.config/bash/git-prompt.sh ] ; then
+  	PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;34m\]\u\[\e[0m\]@\h \[\e[0;32m\]\w\[\e[0m\]" "> "'"$PROMPT_COMMAND"
+fi
+
+# If this is an xterm set the title to pwd
+case "$TERM" in
+xterm*)
+    PROMPT_COMMAND='printf "\e]0;%s\a" "${PWD/#$HOME/\~}";'"$PROMPT_COMMAND"
+    ;;
+*)
+    ;;
+esac

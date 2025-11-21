@@ -1,0 +1,30 @@
+# Helix Configuration
+theme = "catppuccin_latte"
+
+[editor]
+auto-pairs = true
+cursorline = true
+line-number = "relative"
+rulers = [80]
+trim-final-newlines = true
+trim-trailing-whitespace = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+left = ["mode", "spinner", "diagnostics", "workspace-diagnostics"]
+center = ["version-control", "file-base-name", "file-modification-indicator",
+"read-only-indicator"]
+right = ["selections", "register", "position", "position-percentage",
+"file-line-ending", "file-encoding"]
+
+[editor.indent-guides]
+render = true
+character = "▏"
+skip-levels = 1
+
+[keys.normal]
+X = ["extend_line_above", "extend_to_line_bounds"]

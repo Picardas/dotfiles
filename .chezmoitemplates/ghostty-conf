@@ -1,0 +1,46 @@
+# This is the configuration file for Ghostty.
+#
+# File locations
+# macOS
+#   $HOME/Library/Application Support/com.mitchellh.ghostty/config
+# Linux
+#   $XDG_CONFIG_HOME/ghostty/config
+#
+# Ghostty ships with sensible defaults for all options. Users should only need
+# to set options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+#
+# Ghostty can reload the configuration while running by using the menu
+# options or the bound key (default: Command + Shift + comma on macOS and
+# Control + Shift + comma on other platforms). Not all config options can be
+# reloaded while running; some only apply to new windows and others may require
+# a full restart to take effect.
+
+# Theme
+theme = light:Tomorrow,dark:Tomorrow Night Eighties
+window-padding-color = extend
+
+# Configure Font
+font-feature = -calt
+adjust-cell-height= 15%
+
+# Set default terminal size, options come from GNOME Terminal which I think are
+# sensible
+window-width = {{ .ghostty_win_width }}
+window-height = 24
+
+# Other settings
+mouse-hide-while-typing
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS specific settings
+font-thicken
+macos-option-as-alt = left
+keybind = "cmd+.=text:\x03"
+keybind = "cmd+z=text:\x1A"
+{{- end }}

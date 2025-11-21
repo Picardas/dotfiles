@@ -1,0 +1,31 @@
+[".config/zsh/plugins/zsh-syntax-highlighting"]
+        type = "archive"
+        url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+        exact = true
+        stripComponents = 1
+        refreshPeriod = "672h"
+        include = ["*/*.zsh", "*/highlighters/**", "*/.version", "*/.revision-hash"]
+
+[".config/zsh/plugins/zsh-autosuggestions"]
+        type = "archive"
+        url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
+        exact = true
+        stripComponents = 1
+        refreshPeriod = "672h"
+        include = ["*/*.zsh", "*/src/**"]
+
+[".config/zsh/plugins/zsh-git-prompt"]
+        type = "archive"
+        url = "https://github.com/woefe/git-prompt.zsh/archive/master.tar.gz"
+        exact = true
+        stripComponents = 1
+        refreshPeriod = "672h"
+        include = ["*/*.zsh"]
+
+[".config/bash/"]
+        type = "archive"
+        url = "https://github.com/lyze/posh-git-sh/archive/master.tar.gz"
+        exact = true
+        stripComponents = 1
+        refreshPeriod = "672h"
+        include = ["*/git-prompt.sh"]

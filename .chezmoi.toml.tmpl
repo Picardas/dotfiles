@@ -1,0 +1,30 @@
+{{- /* -- Windows Configuration -- */ -}}
+{{- if eq .chezmoi.os "windows" -}}
+sourceDir = {{ joinPath .chezmoi.homeDir "AppData" "Local" "chezmoi" | quote }}
+[data]
+git_autocrlf = "true"
+git_ssh_prog = {{ joinPath .chezmoi.homeDir "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign.exe" | quote }}
+git_cred_prog = "manager"
+
+{{- /* -- MacOS Configuration -- */ -}}
+{{- else if eq .chezmoi.os "darwin" -}}
+[data]
+git_autocrlf = "input"
+git_ssh_prog = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+git_cred_prog = "/opt/homebrew/bin/git-credential-manager"
+ghostty_win_width = 80
+
+{{- /* -- Linux Configuration -- */ -}}
+{{- else if eq .chezmoi.os "linux" -}}
+[data]
+git_autocrlf = "input"
+ghostty_win_width = 132
+
+{{- /* -- WSL Specific Configuration -- */ -}}
+{{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+{{- $WinUserProfile := output "powershell.exe" "-Command" "Write-Output $env:USERPROFILE" | trim -}}
+{{- $WSLlUserProfile := output "wslpath" $WinUserProfile | trim }}
+git_ssh_prog = {{ joinPath $WSLlUserProfile "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign-wsl.exe" | quote }}
+git_cred_prog = {{ joinPath $WSLlUserProfile "scoop" "apps" "mingit" "current" "mingw64" "bin" "git-credential-manager.exe" | quote }}
+{{- end }}
+{{- end }}

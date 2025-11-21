@@ -1,0 +1,102 @@
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+# umask 022
+
+# if running bash
+if [ -n "$BASH_VERSION" ] ; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ] ; then
+        . "$HOME/.bashrc"
+    fi
+    # create folder for history
+    if [ ! -d ${XDG_STATE_HOME:-$HOME/.local/state}/bash ] ; then
+        mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/bash"
+    fi
+
+	# configure location of history file
+	export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+fi
+
+# if running zsh
+if [ -n "$ZSH_VERSION" ] ; then
+        # create folder for history
+        if [ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/zsh" ] ; then
+            mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+        fi
+
+	# configure location of history file
+	export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+# create folder for less history
+if [ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/less" ] ; then
+    mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/less"
+fi
+
+# Less history
+export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/lesshst"
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# Default CLI flags
+{{ if eq .chezmoi.os "linux" -}}
+lsflags=(--color=auto --group-directories-first --classify)
+grepflags=(--colour=auto)
+{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+export COLORTERM=truecolor
+export SSH_SK_HELPER="/mnt/c/Windows/System32/OpenSSH/ssh-sk-helper.exe"
+{{- end }}
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+{{ else if eq .chezmoi.os "darwin" -}}
+lsflags=(-GF)
+grepflags=(--colour=auto)
+export CLICOLOR=1
+# Use 1Password as ssh-agent
+if [ -f "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" ] ; then
+        export SSH_AUTH_SOCK="$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+fi
+# Add Homebrew to PATH
+if [ -d "/opt/homebrew" ]; then
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+{{- end }}
+
+# Function to find the preferred editor
+set_preferred_editor() {
+  # Check for Helix (hx) first
+  if command -v hx > /dev/null 2>&1; then
+    export VISUAL='hx'
+    export EDITOR='hx'
+    return
+  fi
+
+  # Check for Vim second
+  if command -v vim > /dev/null 2>&1; then
+    export VISUAL='vim'
+    export EDITOR='vim'
+    return
+  fi
+
+  # Fallback to vim-minimal (vi) if neither is found
+  export VISUAL='vi'
+  export EDITOR='vi'
+}
+
+# Run the function to set the variables
+set_preferred_editor
+
+# Clean up the function definition
+unset -f set_preferred_editor
