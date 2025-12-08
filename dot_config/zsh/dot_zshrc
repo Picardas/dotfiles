@@ -59,6 +59,8 @@ setopt HIST_EXPIRE_DUPS_FIRST
 # Less history
 export LESSHISTFILE=${XDG_STATE_HOME:-$HOME/.local/state}/less/lesshst
 
+# Emacs keybinds
+bindkey -e
 # Search history with up and down keys
 bindkey "\e[A" history-beginning-search-backward
 bindkey "\e[B" history-beginning-search-forward
