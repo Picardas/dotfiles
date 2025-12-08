@@ -27,7 +27,6 @@ window-padding-color = extend
 
 # Configure Font
 font-feature = -calt
-adjust-cell-height= 15%
 
 # Set default terminal size, options come from GNOME Terminal which I think are
 # sensible
