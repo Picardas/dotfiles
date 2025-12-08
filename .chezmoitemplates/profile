@@ -72,19 +72,22 @@ fi
 if [ -d "/opt/homebrew" ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+if [ -d "$(brew --prefix python)" ] ; then
+	export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+fi
 {{- end }}
 
 # Function to find the preferred editor
 set_preferred_editor() {
   # Check for Helix (hx) first
-  if command -v hx > /dev/null 2>&1; then
+  if command -v hx > /dev/null 2>&1 ; then
     export VISUAL='hx'
     export EDITOR='hx'
     return
   fi
 
   # Check for Vim second
-  if command -v vim > /dev/null 2>&1; then
+  if command -v vim > /dev/null 2>&1 ; then
     export VISUAL='vim'
     export EDITOR='vim'
     return
