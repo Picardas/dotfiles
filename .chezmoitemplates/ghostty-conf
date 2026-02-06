@@ -42,5 +42,4 @@ font-thicken
 macos-option-as-alt = left
 keybind = "cmd+.=text:\x03"
 keybind = "cmd+z=text:\x1A"
-quit-after-last-window-closed=true
 {{- end }}
