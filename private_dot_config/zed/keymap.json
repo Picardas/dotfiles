@@ -6,25 +6,25 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-  {
-    "context": "Workspace",
-    "bindings": {
-      // "shift shift": "file_finder::Toggle"
-      "cmd-b": "workspace::ToggleRightDock",
-      "cmd-r": "workspace::ToggleLeftDock",
-    },
-  },
-  {
-    "context": "Editor && vim_mode == insert",
-    "bindings": {
-      // "j k": "vim::NormalBefore"
-    },
-  },
-  {
-    "context": "Terminal",
-    "bindings": {
-      "cmd-.": ["terminal::SendText", "\u0003"],
-      "cmd-z": ["terminal::SendText", "\u001A"],
-    },
-  },
+	{
+		"context": "Workspace",
+		"bindings": {
+			// "shift shift": "file_finder::Toggle"
+			"cmd-b": "workspace::ToggleRightDock",
+			"cmd-r": "workspace::ToggleLeftDock",
+		},
+	},
+	{
+		"context": "Editor && vim_mode == insert",
+		"bindings": {
+			// "j k": "vim::NormalBefore"
+		},
+	},
+	{
+		"context": "Terminal",
+		"bindings": {
+			"cmd-.": ["terminal::SendText", "\u0003"],
+			"cmd-z": ["terminal::SendText", "\u001A"],
+		},
+	},
 ]

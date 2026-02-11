@@ -2,8 +2,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+	*i*) ;;
+	  *) return;;
 esac
 
 # source global definitions
@@ -91,7 +91,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Configure prompt
 # Uses posh-git-sh (https://github.com/lyze/posh-git-sh) which is loaded in ~/.config/bash above
 if [ -f ~/.config/bash/git-prompt.sh ] ; then
-  	PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;34m\]\u\[\e[0m\]@\h \[\e[0;32m\]\w\[\e[0m\]" "> "'"$PROMPT_COMMAND"
+	PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;34m\]\u\[\e[0m\]@\h \[\e[0;32m\]\w\[\e[0m\]" "> "'"$PROMPT_COMMAND"
 fi
 
 # If this is an xterm set the title to pwd

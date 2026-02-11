@@ -2,26 +2,33 @@
 	name = Picardas
 	email = 167648023+Picardas@users.noreply.github.com
 	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPd8PlDvpyPa/8RitqtT1fG5iMbVyhaCusHHB88Cesr
+
 [core]
 	autocrlf = {{ .git_autocrlf }}
 	excludesfile = {{ joinPath .chezmoi.homeDir ".config" "git" "global_ignore" | quote }}
-	{{ if eq .chezmoi.os "linux" -}}
+	{{- if eq .chezmoi.os "linux" -}}
 	{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 	sshCommand = ssh.exe
 	{{- end -}}
 	{{- else if eq .chezmoi.os "windows" -}}
 	editor = edit.exe
 	{{- end }}
+
 [init]
 	defaultBranch = main
+
 [credential]
 	helper = {{ .git_cred_prog | quote }}
+
 [commit]
 	gpgsign = true
+
 [tag]
 	gpgSign = true
+
 [gpg]
 	format = ssh
+
 [gpg "ssh"]
 	program = {{ .git_ssh_prog | quote }}
 	allowedSignersFile = {{ joinPath .chezmoi.homeDir ".ssh" "allowed_signers" | quote }}
