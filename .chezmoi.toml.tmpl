@@ -1,11 +1,12 @@
 {{- /* Default Values */ -}}
+{{- $sourceDir := joinPath .chezmoi.homeDir ".local" "chezmoi" -}}
 {{- $autocrlf := "input" -}}
 {{- $sshProg := "/usr/bin/ssh" -}}
 {{- $credProg := "" -}}
 {{- $width := 132 -}}
 
 {{- if eq .chezmoi.os "windows" -}}
-    sourceDir = {{ joinPath .chezmoi.homeDir "AppData" "Local" "chezmoi" | quote }}
+    {{- $sourceDir = joinPath .chezmoi.homeDir "AppData" "Local" "chezmoi" -}}
     {{- $autocrlf = "true" -}}
     {{- $sshProg = joinPath .chezmoi.homeDir "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign.exe" -}}
     {{- $credProg = "manager" -}}
@@ -23,6 +24,7 @@
         {{- $credProg = joinPath $WSLlUserProfile "scoop" "apps" "mingit" "current" "mingw64" "bin" "git-credential-manager.exe" -}}
     {{- end -}}
 {{- end -}}
+sourceDir = {{ $sourceDir | quote }}
 
 [data]
     git_autocrlf = {{ $autocrlf | quote }}

@@ -46,19 +46,19 @@ fi
 export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/lesshst"
 
 # Default CLI flags
-{{ if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.os "linux" -}}
 # Uncomment the following line if you don't like systemctl's auto-paging feature
 # export SYSTEMD_PAGER=
 
 lsflags=(--color=auto --group-directories-first --classify)
 grepflags=(--colour=auto)
-{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-export COLORTERM=truecolor
-export SSH_SK_HELPER="/mnt/c/Windows/System32/OpenSSH/ssh-sk-helper.exe"
-{{ end }}
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+export COLORTERM=truecolor
+export SSH_SK_HELPER="/mnt/c/Windows/System32/OpenSSH/ssh-sk-helper.exe"
+{{- end -}}
 {{ else if eq .chezmoi.os "darwin" -}}
 lsflags=(-GF)
 grepflags=(--colour=auto)
