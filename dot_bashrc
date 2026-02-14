@@ -88,6 +88,15 @@ man() {
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+{{- else if eq .chezmoi.os "linux" -}}
+    {{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+    	# Default to window SSH tools
+	alias ssh='ssh.exe'
+	alias scp='scp.exe'
+	alias ssh-add='ssh-add.exe'
+    {{- end -}}
+{{- end -}}
+
 # Configure prompt
 # Uses posh-git-sh (https://github.com/lyze/posh-git-sh) which is loaded in ~/.config/bash above
 if [ -f ~/.config/bash/git-prompt.sh ] ; then
