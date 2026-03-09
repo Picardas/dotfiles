@@ -26,6 +26,8 @@ theme = light:Tomorrow,dark:Tomorrow Night Eighties
 window-padding-color = extend
 
 # Configure Font
+font-family = Lilex
+font-size = 13
 font-feature = -calt
 
 # Set default terminal size, options come from GNOME Terminal which I think are
