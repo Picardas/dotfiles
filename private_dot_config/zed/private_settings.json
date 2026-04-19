@@ -7,9 +7,6 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "tab_size": 8,
-  "hard_tabs": true,
-  "helix_mode": true,
   "vim": {
     "toggle_relative_line_numbers": true,
     "highlight_on_yank_duration": 250,

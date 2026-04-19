@@ -83,6 +83,11 @@ fi
 export HOMEBREW_AUTO_UPDATE_SECS="1209600"
 {{- end }}
 
+# Configure Java
+if [ -f "/usr/libexec/java_home" ]; then
+	export JAVA_HOME=$(/usr/libexec/java_home)
+fi
+
 # Function to find the preferred editor
 set_preferred_editor() {
 	# Check for Helix (hx) first

@@ -40,6 +40,7 @@ mouse-hide-while-typing
 
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS specific settings
+macos-titlebar-style = "native"
 font-thicken
 macos-option-as-alt = left
 keybind = "cmd+.=text:\x03"
