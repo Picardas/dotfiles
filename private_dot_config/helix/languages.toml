@@ -1,0 +1,155 @@
+[[language]]
+name = "c"
+# auto-format = true
+formatter = { command = "clang-format", args = ["--style=file"] }
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "cmake"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "make"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "meson"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "python"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "swift"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "bash"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "powershell"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "lua"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "html"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "css"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-config"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-ignore"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-attributes"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-commit"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-rebase"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "git-notes"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "diff"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "dockerfile"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "latex"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "comment"
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "toml"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "json"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "yaml"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "markdown"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "sshclientconfig"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "xml"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "systemd"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "ini"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "hosts"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "log"
+indent = { tab-width = 8, unit = "\t" }
+
+[[language]]
+name = "ghostty"
+indent = { tab-width = 8, unit = "\t" }
+
+# These are in 'master' but not yet the in the release
+[[language]]
+name = "robots.txt"
+scope = "source.robots.txt"
+file-types = [{ glob = "robots.txt" }]
+indent = { tab-width = 8, unit = "\t" }
+injection-regex = "robots[\\.-]txt"
+grammar = "robots"
+comment-token = "#"
+
+[[grammar]]
+name = "robots"
+source = { git = "https://github.com/opa-oz/tree-sitter-robots-txt", rev = "8e3a4205b76236bb6dbebdbee5afc262ce38bb62" }
+
+[[language]]
+name = "pip-requirements"
+scope = "source.pip-requirements"
+indent = { tab-width = 8, unit = "\t" }
+injection-regex = "(pip-)?requirements(\\.txt)?"
+grammar = "requirements"
+file-types = [{ glob = "requirements.txt" }, { glob = "constraints.txt" }]
+
+[[grammar]]
+name = "requirements"
+source = { git = "https://github.com/tree-sitter-grammars/tree-sitter-requirements", rev = "caeb2ba854dea55931f76034978de1fd79362939" }

@@ -1,0 +1,117 @@
+# .bashrc file for interactive bash(1) shells.
+
+# If not running interactively, don't do anything
+case $- in
+	*i*) ;;
+	  *) return;;
+esac
+
+# source global definitions
+# RHEL based distros
+if [ -f /etc/bashrc ] ; then
+	. /etc/bashrc
+# Debian based distros
+elif [ -f /etc/bash.bashrc ] ; then
+	. /etc/bash.bashrc
+fi
+
+# User specific aliases and functions
+if [ -d ~/.config/bash/ ] ; then
+	for rc in ~/.config/bash/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+unset rc
+
+# enable programmable completion features
+if ! shopt -oq posix; then
+	if [ -f /usr/share/bash-completion/bash_completion ] ; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ] ; then
+		. /etc/bash_completion
+	fi
+fi
+
+# Configure bash history
+shopt -s direxpand histappend cmdhist
+HISTCONTROL="ignoreboth"
+HISTIGNORE="clear:exit:reset:reboot:poweroff:history:systemctl reboot:systemctl poweroff"
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=1000
+HISTFILESIZE=10000
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# ensure truecolor support
+export COLORTERM=truecolor
+
+# Not just in .profile: this file is also sourced by non-login
+# interactive shells, which never run .profile
+lsflags=(--color=auto --group-directories-first --classify)
+grepflags=(--color=auto)
+
+# Fedora also aliases ls/ll/l. via /etc/profile.d/colorls.sh (sourced
+# above via /etc/bashrc); redefining as an alias here safely overwrites
+# those without needing unalias
+alias ls='command ls "${lsflags[@]}"'
+alias la='ls -A -C'
+alias ll='ls -l -A --human-readable'
+# quick case-insensitive partial filename search
+alias li='ll | grep -i'
+
+# Same as ls above re: Fedora's colorgrep.sh aliases. egrep/fgrep route
+# through grep -E/-F rather than the standalone binaries, which GNU
+# grep 3.8+ flags as obsolescent
+alias grep='command grep "${grepflags[@]}"'
+alias egrep='grep -E'
+alias fgrep='grep -F'
+
+# colourful less
+alias less='less -R'
+
+# colourful man pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		man "$@"
+}
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+{{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+# Use Windows SSH tools under WSL
+alias ssh='ssh.exe'
+alias scp='scp.exe'
+alias ssh-add='ssh-add.exe'
+{{- end }}
+# Configure prompt
+# Uses posh-git-sh (https://github.com/lyze/posh-git-sh), loaded in ~/.config/bash above.
+# Guarded against prepending duplicates if this file is sourced more than once.
+if [ -f ~/.config/bash/git-prompt.sh ] ; then
+	case "$PROMPT_COMMAND" in
+	*__posh_git_ps1*) ;;
+	*) PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;34m\]\u\[\e[0m\]@\h \[\e[0;32m\]\w\[\e[0m\]" "> "; '"$PROMPT_COMMAND" ;;
+	esac
+fi
+
+# If this is an xterm set the title to pwd
+case "$TERM" in
+xterm*)
+    case "$PROMPT_COMMAND" in
+    *'\e]0;%s\a'*) ;;
+    *) PROMPT_COMMAND='printf "\e]0;%s\a" "${PWD/#$HOME/\~}"; '"$PROMPT_COMMAND" ;;
+    esac
+    ;;
+*)
+    ;;
+esac

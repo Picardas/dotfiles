@@ -1,0 +1,107 @@
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+# umask 022
+
+# if running bash
+if [ -n "$BASH_VERSION" ] ; then
+	# include .bashrc if it exists
+	if [ -f "$HOME/.bashrc" ] ; then
+		. "$HOME/.bashrc"
+	fi
+	# create folder for history
+	if [ ! -d ${XDG_STATE_HOME:-$HOME/.local/state}/bash ] ; then
+		mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/bash"
+	fi
+	# configure location of history file
+	export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+fi
+
+# if running zsh
+if [ -n "$ZSH_VERSION" ] ; then
+	# create folder for history
+	if [ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/zsh" ] ; then
+		mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+	fi
+	# configure location of history file
+	export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+	PATH="$HOME/.local/bin:$PATH"
+fi
+
+# create folder for less history
+if [ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/less" ] ; then
+	mkdir -p  "${XDG_STATE_HOME:-$HOME/.local/state}/less"
+fi
+
+# Less history
+export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/lesshst"
+
+# Default CLI flags
+{{ if eq .chezmoi.os "linux" -}}
+# Uncomment the following line if you don't like systemctl's auto-paging feature
+# export SYSTEMD_PAGER=
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+export COLORTERM=truecolor
+export SSH_SK_HELPER="/mnt/c/Windows/System32/OpenSSH/ssh-sk-helper.exe"
+{{- end -}}
+{{ else if eq .chezmoi.os "darwin" -}}
+export CLICOLOR=1
+
+# Configure Homebrew
+if [ -d "/opt/homebrew" ]; then
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+if [ -d "$(brew --prefix make)" ] ; then
+	export PATH="$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"
+fi
+if [ -d "$(brew --prefix python)" ] ; then
+	export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+fi
+
+export HOMEBREW_AUTO_UPDATE_SECS="1209600"
+export HOMEBREW_NO_ANALYTICS=1
+{{- end }}
+
+# Configure Java
+if [ -f "/usr/libexec/java_home" ]; then
+	export JAVA_HOME=$(/usr/libexec/java_home)
+fi
+
+# Function to find the preferred editor
+set_preferred_editor() {
+	# Check for Helix (hx) first
+	if command -v hx > /dev/null 2>&1 ; then
+		export VISUAL='hx'
+		export EDITOR='hx'
+		return
+	fi
+
+	# Check for Vim second
+	if command -v vim > /dev/null 2>&1 ; then
+		export VISUAL='vim'
+		export EDITOR='vim'
+		return
+	fi
+
+	# Fallback to vim-minimal (vi) if neither is found
+	export VISUAL='vi'
+	export EDITOR='vi'
+}
+
+# Run the function to set the variables
+set_preferred_editor
+
+# Clean up the function definition
+unset -f set_preferred_editor

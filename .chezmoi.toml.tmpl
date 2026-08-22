@@ -1,0 +1,42 @@
+{{- /* Default Values */ -}}
+{{- $sourceDir := joinPath .chezmoi.homeDir ".local" "share" "chezmoi" -}}
+{{- $autocrlf := "input" -}}
+{{- $sshProg := "/usr/bin/ssh" -}}
+{{- $credProg := "" -}}
+{{- $credStore := "" -}}
+{{- $credGui := true -}}
+{{- $width := 132 -}}
+
+{{- if eq .chezmoi.os "windows" -}}
+    {{- $sourceDir = joinPath .chezmoi.homeDir "AppData" "Local" "chezmoi" -}}
+    {{- $autocrlf = "true" -}}
+    {{- $sshProg = joinPath .chezmoi.homeDir "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign.exe" -}}
+    {{- $credProg = "manager" -}}
+
+{{- else if eq .chezmoi.os "darwin" -}}
+    {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+    {{- $credProg = "/opt/homebrew/bin/git-credential-manager" -}}
+    {{- $width = 80 -}}
+
+{{- else if eq .chezmoi.os "linux" -}}
+    {{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+        {{- $WinUserProfile := output "powershell.exe" "-Command" "Write-Output $env:USERPROFILE" | trim -}}
+        {{- $WSLlUserProfile := output "wslpath" $WinUserProfile | trim -}}
+        {{- $sshProg = joinPath $WSLlUserProfile "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign-wsl.exe" -}}
+        {{- $credProg = joinPath $WSLlUserProfile "scoop" "apps" "mingit" "current" "mingw64" "bin" "git-credential-manager.exe" -}}
+    {{- else -}}
+        {{- $sshProg = "/opt/1Password/op-ssh-sign" -}}
+        {{- $credProg = "/usr/bin/git-credential-manager" -}}
+        {{- $credStore = "secretservice" -}}
+        {{- $credGui = false -}}
+    {{- end -}}
+{{- end -}}
+sourceDir = {{ $sourceDir | quote }}
+
+[data]
+    git_autocrlf = {{ $autocrlf | quote }}
+    git_ssh_prog = {{ $sshProg | quote }}
+    git_cred_prog = {{ $credProg | quote }}
+    git_cred_store = {{ $credStore | quote }}
+    git_cred_gui = {{ $credGui }}
+    ghostty_win_width = {{ $width }}

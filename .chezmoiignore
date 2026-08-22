@@ -1,0 +1,27 @@
+# unused for now, kept for reference
+.config/nvim
+.config/helix
+
+{{ if ne .chezmoi.os "windows" -}}
+.config/powershell/**
+AppData/**
+{{- end }}
+
+# zsh config is macOS-only; bash is used everywhere else
+{{ if ne .chezmoi.os "darwin" -}}
+.config/zsh/**
+.zshenv
+Library/**
+{{- end }}
+
+# unmanaged on Windows/WSL, which route ssh through Windows' own agent instead
+{{ if or (eq .chezmoi.os "windows") (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
+.ssh/config
+{{- end }}
+
+{{ if ne .chezmoi.os "linux" -}}
+.bashrc
+.inputrc
+.profile
+.config/bash/**
+{{- end }}
