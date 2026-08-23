@@ -22,6 +22,13 @@ Library/**
 {{ if ne .chezmoi.os "linux" -}}
 .bashrc
 .inputrc
-.profile
 .config/bash/**
+{{- end }}
+
+{{ if eq .chezmoi.os "linux" -}}
+{{ if eq .chezmoi.osRelease.id "fedora" -}}
+.profile
+{{ else -}}
+.bash_profile
+{{- end -}}
 {{- end }}
