@@ -72,6 +72,15 @@ alias fgrep='grep -F'
 # colourful less
 alias less='less -R'
 
+# Prefer Neovim over vi/vim if installed; some distros ship a stripped-down
+# vi (e.g. vim-minimal) alongside a fuller-featured vim, so prefer that too
+if command -v nvim > /dev/null 2>&1 ; then
+	alias vi='nvim'
+	alias vim='nvim'
+elif command -v vim > /dev/null 2>&1 ; then
+	alias vi='vim'
+fi
+
 # colourful man pages
 man() {
 	env \

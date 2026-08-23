@@ -81,10 +81,10 @@ fi
 
 # Function to find the preferred editor
 set_preferred_editor() {
-	# Check for Helix (hx) first
-	if command -v hx > /dev/null 2>&1 ; then
-		export VISUAL='hx'
-		export EDITOR='hx'
+	# Check for Neovim first
+	if command -v nvim > /dev/null 2>&1 ; then
+		export VISUAL='nvim'
+		export EDITOR='nvim'
 		return
 	fi
 
