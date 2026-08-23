@@ -24,7 +24,7 @@
         {{- $sshProg = joinPath $WSLlUserProfile "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign-wsl.exe" -}}
         {{- $credProg = joinPath $WSLlUserProfile "scoop" "apps" "mingit" "current" "mingw64" "bin" "git-credential-manager.exe" -}}
     {{- else -}}
-        {{- $sshProg = "/opt/1Password/op-ssh-sign" -}}
+        {{- $sshProg = "/usr/share/1password/op-ssh-sign" -}}
         {{- $credProg = "/usr/bin/git-credential-manager" -}}
         {{- $credStore = "secretservice" -}}
     {{- end -}}
