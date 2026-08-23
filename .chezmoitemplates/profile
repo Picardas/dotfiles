@@ -79,6 +79,11 @@ if [ -f "/usr/libexec/java_home" ]; then
 	export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
+# Clean up $HOME
+export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/readline/inputrc"
+export __GL_SHADER_DISK_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
+
 # Function to find the preferred editor
 set_preferred_editor() {
 	# Check for Neovim first

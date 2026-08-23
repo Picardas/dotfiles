@@ -21,7 +21,7 @@ Library/**
 
 {{ if ne .chezmoi.os "linux" -}}
 .bashrc
-.inputrc
+.config/readline/**
 .config/bash/**
 {{- end }}
 
