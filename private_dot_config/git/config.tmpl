@@ -21,9 +21,6 @@
 	{{- if .git_cred_store }}
 	credentialStore = {{ .git_cred_store | quote }}
 	{{- end }}
-	{{- if not .git_cred_gui }}
-	guiPrompt = false
-	{{- end }}
 
 [commit]
 	gpgsign = true

@@ -4,7 +4,6 @@
 {{- $sshProg := "/usr/bin/ssh" -}}
 {{- $credProg := "" -}}
 {{- $credStore := "" -}}
-{{- $credGui := true -}}
 {{- $width := 132 -}}
 
 {{- if eq .chezmoi.os "windows" -}}
@@ -28,7 +27,6 @@
         {{- $sshProg = "/opt/1Password/op-ssh-sign" -}}
         {{- $credProg = "/usr/bin/git-credential-manager" -}}
         {{- $credStore = "secretservice" -}}
-        {{- $credGui = false -}}
     {{- end -}}
 {{- end -}}
 sourceDir = {{ $sourceDir | quote }}
@@ -38,5 +36,4 @@ sourceDir = {{ $sourceDir | quote }}
     git_ssh_prog = {{ $sshProg | quote }}
     git_cred_prog = {{ $credProg | quote }}
     git_cred_store = {{ $credStore | quote }}
-    git_cred_gui = {{ $credGui }}
     ghostty_win_width = {{ $width }}
