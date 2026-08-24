@@ -1,6 +1,9 @@
 # unused for now, kept for reference
 .config/nvim
 .config/helix
+.config/zed
+AppData/**
+
 
 {{ if ne .chezmoi.os "windows" -}}
 .config/powershell/**
