@@ -383,6 +383,5 @@ function Global:__Terminal-Get-LastExitCode
 
 #   return $out
 # }
-Import-Module scoop-completion
 Import-Module posh-git
-. "$HOME\scoop\apps\chezmoi\current\completions\chezmoi.ps1"
+Import-Module chezmoi-completions
