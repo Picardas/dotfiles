@@ -365,6 +365,8 @@ function prompt
 
 	Write-Host $env:USERNAME -NoNewline -ForegroundColor Green
 	Write-Host " " -NoNewline
+	Write-Host $env:COMPUTERNAME -NoNewline
+	Write-Host " " -NoNewline
 	Write-Host $path -NoNewline
 
 	$global:LASTEXITCODE = $origLastExitCode

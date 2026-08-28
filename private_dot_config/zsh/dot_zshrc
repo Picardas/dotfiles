@@ -127,8 +127,8 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="%B%F{red}●%b"
 ZSH_THEME_GIT_PROMPT_STASHED="%F{blue}⚑"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
-# User
-PROMPT='%(!.%F{red}.%F{green})%B%n%b%f '
+# User/Hostname
+PROMPT='%(!.%F{red}.%F{green})%B%n%b%f %m '
 # Dir/Source Control
 PROMPT+='%~$(gitprompt) %(?.%f.%F{red})>%f '
 RPROMPT=''
