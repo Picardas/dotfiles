@@ -350,38 +350,35 @@ function Global:__Terminal-Get-LastExitCode
 	return $LastExitCode
 }
 
-# function prompt {
-#   # First, emit a mark for the _end_ of the previous command.
-#   $gle = $(__Terminal-Get-LastExitCode);
-#   $LastHistoryEntry = $(Get-History -Count 1)
-#   # Skip finishing the command if the first command has not yet started
-#   if ($Global:__LastHistoryId -ne -1) {
-#     if ($LastHistoryEntry.Id -eq $Global:__LastHistoryId) {
-#       # Don't provide a command line or exit code if there was no history entry (eg. ctrl+c, enter on no command)
-#       $out += "`e]133;D`a"
-#     } else {
-#       $out += "`e]133;D;$gle`a"
-#     }
-#   }
+function prompt
+{
+	$origLastExitCode = $LASTEXITCODE
 
+	$path = $executionContext.SessionState.Path.CurrentLocation.Path
+	if ($path -eq $HOME)
+	{
+		$path = "~"
+	} elseif ($path.StartsWith("$HOME$([System.IO.Path]::DirectorySeparatorChar)"))
+	{
+		$path = "~" + $path.Substring($HOME.Length)
+	}
 
-#   $loc = $($executionContext.SessionState.Path.CurrentLocation);
+	Write-Host $env:USERNAME -NoNewline -ForegroundColor Green
+	Write-Host " " -NoNewline
+	Write-Host $path -NoNewline
 
-#   # Prompt started
-#   $out += "`e]133;A$([char]07)";
+	$global:LASTEXITCODE = $origLastExitCode
+	$vcsStatus = Write-VcsStatus
+	$global:LASTEXITCODE = $origLastExitCode
+	if ($vcsStatus)
+	{
+		Write-Host $vcsStatus -NoNewline
+	}
 
-#   # CWD
-#   $out += "`e]9;9;`"$loc`"$([char]07)";
+	return "$('>' * ($nestedPromptLevel + 1)) "
+}
 
-#   # (your prompt here)
-#   $out += "PS $loc$('>' * ($nestedPromptLevel + 1)) ";
-
-#   # Prompt ended, Command started
-#   $out += "`e]133;B$([char]07)";
-
-#   $Global:__LastHistoryId = $LastHistoryEntry.Id
-
-#   return $out
-# }
 Import-Module posh-git
 Import-Module chezmoi-completions
+
+$GitPromptSettings.PathStatusSeparator = ''

@@ -109,7 +109,7 @@ alias ssh-add='ssh-add.exe'
 if [ -f ~/.config/bash/git-prompt.sh ] ; then
 	case "$PROMPT_COMMAND" in
 	*__posh_git_ps1*) ;;
-	*) PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;32m\]\u\[\e[0m\]@\h \[\e[0;32m\]\w\[\e[0m\]" "> "; '"$PROMPT_COMMAND" ;;
+	*) PROMPT_COMMAND='__posh_git_ps1 "\[\e[1;32m\]\u\[\e[0m\] \w" "> "; '"$PROMPT_COMMAND" ;;
 	esac
 fi
 
