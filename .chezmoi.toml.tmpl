@@ -22,7 +22,7 @@
         {{- $WinUserProfile := output "powershell.exe" "-Command" "Write-Output $env:USERPROFILE" | trim -}}
         {{- $WSLlUserProfile := output "wslpath" $WinUserProfile | trim -}}
         {{- $sshProg = joinPath $WSLlUserProfile "AppData" "Local" "Microsoft" "WindowsApps" "op-ssh-sign-wsl.exe" -}}
-        {{- $credProg = joinPath $WSLlUserProfile "scoop" "apps" "mingit" "current" "mingw64" "bin" "git-credential-manager.exe" -}}
+        {{- $credProg = joinPath "/" "mnt" "c" "Users" "phoevos" "AppData" "Local" "Microsoft" "WinGet" "Packages" "Git.MinGit_Microsoft.Winget.Source_8wekyb3d8bbwe" "mingw64" "bin" "git-credential-manager.exe" -}}
     {{- else -}}
         {{- $sshProg = "/usr/share/1password/op-ssh-sign" -}}
         {{- $credProg = "/usr/bin/git-credential-manager" -}}
