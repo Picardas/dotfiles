@@ -38,6 +38,9 @@ window-height = 24
 # Other settings
 mouse-hide-while-typing
 
+# SSH terminfo
+shell-integration-features = ssh-terminfo,ssh-env
+
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS specific settings
 macos-titlebar-style = "native"
