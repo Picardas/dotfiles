@@ -1,0 +1,12 @@
+# Tab menu complete
+set show-all-if-ambiguous on
+set menu-complete-display-prefix on
+set colored-completion-prefix on
+set colored-stats on
+set show-all-if-unmodified on
+set completion-ignore-case on
+TAB: menu-complete
+
+# Better history search
+"\e[A": history-search-backward
+"\e[B": history-search-forward

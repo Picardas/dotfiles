@@ -1,0 +1,9 @@
+Include ~/.ssh/config.d/*
+{{ if eq .chezmoi.os "darwin" -}}
+Host *
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else if .container_machine -}}
+{{- else if and (eq .chezmoi.os "linux") (not (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
+Host *
+	IdentityAgent ~/.1password/agent.sock
+{{- end }}

@@ -1,0 +1,46 @@
+# Unused / Kept for reference
+.config/nvim
+.config/helix
+.config/zed
+AppData/**
+
+# Windows-only files (Ignore on macOS / Linux)
+{{ if ne .chezmoi.os "windows" -}}
+.config/powershell/**
+{{- end }}
+
+# macOS-only files (Ignore on Linux / Windows)
+{{ if ne .chezmoi.os "darwin" -}}
+.config/zsh/**
+.zshenv
+Library/**
+{{- end }}
+
+# Linux-only Bash configs (Ignore on Windows / macOS)
+{{ if ne .chezmoi.os "linux" -}}
+.bashrc
+.bash_profile
+.profile
+.config/readline/**
+.config/bash/**
+{{- end }}
+
+# Linux distro specifics
+{{ if eq .chezmoi.os "linux" -}}
+{{   if eq .chezmoi.osRelease.id "fedora" -}}
+.profile
+{{   else -}}
+.bash_profile
+{{   end -}}
+{{- end }}
+
+# WSL (SSH agent routed through Windows)
+{{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+.ssh/config
+.ssh/config.d/hosts
+{{- end }}
+
+# Container machines only (no 1Password agent, uses a local key)
+{{ if not .container_machine -}}
+.ssh/config.d/github.conf
+{{- end }}

@@ -1,0 +1,111 @@
+# .bashrc file for interactive bash(1) shells.
+
+# If not running interactively, don't do anything
+case $- in
+	*i*) ;;
+	  *) return;;
+esac
+
+# UTF-8 locale for when not set in containers
+if [ "$(locale charmap 2>/dev/null)" != "UTF-8" ] ; then
+	export LC_CTYPE=C.UTF-8
+fi
+
+# Readline settings, for shells that never read ~/.profile
+if [ -z "$INPUTRC" ] && [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/readline/inputrc" ] ; then
+	export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/readline/inputrc"
+	bind -f "$INPUTRC"
+fi
+
+# source global definitions
+# RHEL based distros
+if [ -f /etc/bashrc ] ; then
+	. /etc/bashrc
+# Debian based distros
+elif [ -f /etc/bash.bashrc ] ; then
+	. /etc/bash.bashrc
+fi
+
+# User specific aliases and functions
+if [ -d ~/.config/bash/ ] ; then
+	for rc in ~/.config/bash/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+unset rc
+
+# enable programmable completion features
+if ! shopt -oq posix; then
+	if [ -f /usr/share/bash-completion/bash_completion ] ; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ] ; then
+		. /etc/bash_completion
+	fi
+fi
+
+# Configure bash history
+shopt -s direxpand histappend cmdhist
+HISTCONTROL="ignoreboth"
+HISTIGNORE="clear:exit:reset:reboot:poweroff:history:systemctl reboot:systemctl poweroff"
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=1000
+HISTFILESIZE=10000
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# ensure truecolor support
+export COLORTERM=truecolor
+
+# Default flags for ls and grep
+lsflags=(--color=auto --group-directories-first --classify)
+grepflags=(--color=auto)
+
+# These replace Fedora's own ls aliases
+alias ls='command ls "${lsflags[@]}"'
+alias la='ls -A -C'
+alias ll='ls -l -A --human-readable'
+# quick case-insensitive partial filename search
+alias li='ll | grep -i'
+
+# These replace Fedora's grep aliases; egrep and fgrep are deprecated
+alias grep='command grep "${grepflags[@]}"'
+alias egrep='grep -E'
+alias fgrep='grep -F'
+
+# colourful less
+alias less='less -R'
+
+# vi and vim open Neovim, or full vim, when installed
+if command -v nvim > /dev/null 2>&1 ; then
+	alias vi='nvim'
+	alias vim='nvim'
+elif command -v vim > /dev/null 2>&1 ; then
+	alias vi='vim'
+fi
+
+# colourful man pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		man "$@"
+}
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+{{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+# Use Windows SSH tools under WSL
+alias ssh='ssh.exe'
+alias scp='scp.exe'
+alias ssh-add='ssh-add.exe'
+{{- end }}
+# Prompt and window title: ~/.config/bash/prompt.bash, loaded above
