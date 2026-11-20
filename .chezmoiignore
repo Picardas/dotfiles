@@ -41,8 +41,8 @@ load-launch-agents.sh
 .ssh/config.d/hosts.conf
 {{- end }}
 
-# Container machines only (no 1Password agent, uses a local key)
-{{ if not .container_machine -}}
+# Container machines / macOS VMs only (no 1Password agent, uses a local key)
+{{ if not (or .container_machine .mac_vm) -}}
 .ssh/config.d/github.conf
 {{- end }}
 
