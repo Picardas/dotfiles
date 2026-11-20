@@ -55,5 +55,6 @@ Library/LaunchAgents/local.vm-ssh-agent.plist
 
 # macOS VM only
 {{ if not .mac_vm -}}
+.config/git/ssh-sign
 prepare-vm-ssh-agent.sh
 {{- end }}

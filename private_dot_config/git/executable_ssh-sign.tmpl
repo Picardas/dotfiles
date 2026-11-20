@@ -1,0 +1,3 @@
+#!/bin/sh
+[ -S {{ .ssh_agent_sock | quote }} ] && export SSH_AUTH_SOCK={{ .ssh_agent_sock | quote }}
+exec /usr/bin/ssh-keygen "$@"

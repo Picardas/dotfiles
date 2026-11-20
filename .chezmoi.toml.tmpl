@@ -19,6 +19,7 @@
     {{- $macVM = eq (output "/usr/sbin/sysctl" "-n" "kern.hv_vmm_present" | trim) "1" -}}
     {{- if $macVM -}}
         {{- $agentSock = joinPath .chezmoi.homeDir ".1password" "agent.sock" -}}
+        {{- $sshProg = joinPath .chezmoi.homeDir ".config" "git" "ssh-sign" -}}
     {{- else -}}
         {{- $agentSock = joinPath .chezmoi.homeDir "Library" "Group Containers" "2BUA8C4S2C.com.1password" "t" "agent.sock" -}}
         {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
