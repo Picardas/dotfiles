@@ -20,6 +20,7 @@
         {{- $sshProg = "" -}}
     {{- end -}}
     {{- $credProg = "/opt/homebrew/bin/git-credential-manager" -}}
+    {{- $credStore = "keychain" -}}
     {{- $width = 80 -}}
 
 {{- else if eq .chezmoi.os "linux" -}}
