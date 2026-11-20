@@ -14,7 +14,11 @@
     {{- $credProg = "manager" -}}
 
 {{- else if eq .chezmoi.os "darwin" -}}
-    {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+    {{- if stat "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+        {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+    {{- else -}}
+        {{- $sshProg = "" -}}
+    {{- end -}}
     {{- $credProg = "/opt/homebrew/bin/git-credential-manager" -}}
     {{- $width = 80 -}}
 
