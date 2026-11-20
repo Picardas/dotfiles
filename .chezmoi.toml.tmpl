@@ -4,8 +4,10 @@
 {{- $sshProg := "" -}}
 {{- $credProg := "" -}}
 {{- $credStore := "" -}}
+{{- $agentSock := "" -}}
 {{- $width := 132 -}}
 {{- $machine := false -}}
+{{- $macVM := false -}}
 
 {{- if eq .chezmoi.os "windows" -}}
     {{- $sourceDir = joinPath .chezmoi.homeDir "AppData" "Local" "chezmoi" -}}
@@ -14,13 +16,15 @@
     {{- $credProg = "manager" -}}
 
 {{- else if eq .chezmoi.os "darwin" -}}
-    {{- if stat "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
-        {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+    {{- $macVM = eq (output "/usr/sbin/sysctl" "-n" "kern.hv_vmm_present" | trim) "1" -}}
+    {{- if $macVM -}}
+        {{- $agentSock = joinPath .chezmoi.homeDir ".1password" "agent.sock" -}}
     {{- else -}}
-        {{- $sshProg = "" -}}
+        {{- $agentSock = joinPath .chezmoi.homeDir "Library" "Group Containers" "2BUA8C4S2C.com.1password" "t" "agent.sock" -}}
+        {{- $sshProg = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+        {{- $credProg = "/opt/homebrew/bin/git-credential-manager" -}}
+        {{- $credStore = "keychain" -}}
     {{- end -}}
-    {{- $credProg = "/opt/homebrew/bin/git-credential-manager" -}}
-    {{- $credStore = "keychain" -}}
     {{- $width = 80 -}}
 
 {{- else if eq .chezmoi.os "linux" -}}
@@ -33,6 +37,7 @@
         {{- $sshProg = "" -}}
         {{- $machine = true -}}
     {{- else -}}
+        {{- $agentSock = joinPath .chezmoi.homeDir ".1password" "agent.sock" -}}
         {{- $sshProg = "/usr/share/1password/op-ssh-sign" -}}
         {{- $credProg = "/usr/bin/git-credential-manager" -}}
         {{- $credStore = "secretservice" -}}
@@ -45,5 +50,7 @@ sourceDir = {{ $sourceDir | quote }}
     git_ssh_prog = {{ $sshProg | quote }}
     git_cred_prog = {{ $credProg | quote }}
     git_cred_store = {{ $credStore | quote }}
+    ssh_agent_sock = {{ $agentSock | quote }}
     container_machine = {{ $machine }}
+    mac_vm = {{ $macVM }}
     ghostty_win_width = {{ $width }}

@@ -1,0 +1,7 @@
+Host ubuntu
+	User {{ .chezmoi.username }}
+	HostKeyAlias ubuntu.machine
+	IdentityFile ~/.ssh/id_ed25519_ubuntu
+	IdentitiesOnly yes
+	IdentityAgent none
+	ProxyCommand /bin/sh -c 'SSH_AUTH_SOCK="${SSH_AUTH_SOCK:-$(/bin/launchctl getenv SSH_AUTH_SOCK)}" exec /opt/homebrew/bin/container machine run -i -n ubuntu nc localhost 22'

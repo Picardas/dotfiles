@@ -1,0 +1,22 @@
+Host dev
+	HostName dev-vm.local
+	User dev
+	HostKeyAlias dev-vm.machine
+	IdentityFile ~/.ssh/id_ed25519_dev
+	IdentitiesOnly yes
+	ForwardAgent yes
+
+Host vm-ssh-agent
+	HostName dev-vm.local
+	User dev
+	HostKeyAlias dev-vm.machine
+	IdentityFile ~/.ssh/id_ed25519_dev
+	IdentitiesOnly yes
+	IdentityAgent none
+	SessionType none
+	RemoteForward /Users/dev/.1password/agent.sock {{ .ssh_agent_sock | quote }}
+	ExitOnForwardFailure yes
+	ServerAliveInterval 15
+	ServerAliveCountMax 2
+	BatchMode yes
+	ConnectTimeout 5

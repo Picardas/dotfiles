@@ -1,0 +1,9 @@
+#!/bin/sh
+# com.1password.SSH_AUTH_SOCK: {{ includeTemplate "private_Library/LaunchAgents/com.1password.SSH_AUTH_SOCK.plist.tmpl" . | sha256sum }}
+# local.vm-ssh-agent: {{ include "private_Library/LaunchAgents/local.vm-ssh-agent.plist" | sha256sum }}
+for label in com.1password.SSH_AUTH_SOCK local.vm-ssh-agent; do
+	plist="$HOME/Library/LaunchAgents/$label.plist"
+	[ -f "$plist" ] || continue
+	launchctl bootout "gui/$(id -u)/$label" 2>/dev/null || true
+	launchctl bootstrap "gui/$(id -u)" "$plist"
+done

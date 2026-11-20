@@ -24,7 +24,7 @@
 	{{- end }}
 {{ end }}
 
-{{- if .container_machine }}
+{{- if or .container_machine .mac_vm }}
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 {{- end }}

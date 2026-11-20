@@ -14,6 +14,7 @@ AppData/**
 .config/zsh/**
 .zshenv
 Library/**
+load-launch-agents.sh
 {{- end }}
 
 # Linux-only Bash configs (Ignore on Windows / macOS)
@@ -37,10 +38,22 @@ Library/**
 # WSL (SSH agent routed through Windows)
 {{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 .ssh/config
-.ssh/config.d/hosts
+.ssh/config.d/hosts.conf
 {{- end }}
 
 # Container machines only (no 1Password agent, uses a local key)
 {{ if not .container_machine -}}
 .ssh/config.d/github.conf
+{{- end }}
+
+# macOS host only (runs 1Password and UTM)
+{{ if or (ne .chezmoi.os "darwin") .mac_vm -}}
+.ssh/config.d/dev.conf
+.ssh/config.d/ubuntu.conf
+Library/LaunchAgents/local.vm-ssh-agent.plist
+{{- end }}
+
+# macOS VM only
+{{ if not .mac_vm -}}
+prepare-vm-ssh-agent.sh
 {{- end }}
